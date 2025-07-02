@@ -17,6 +17,10 @@ class GeneratePasswordsUseCase {
                 return Result.failure(IllegalArgumentException("No character types selected"))
             }
             
+            if (config.avoidRepeatingChars && charset.length < config.length) {
+                return Result.failure(IllegalArgumentException("Not enough unique characters for avoid repeating chars"))
+            }
+            
             val passwords = mutableListOf<GeneratedPassword>()
             
             repeat(config.count) {
@@ -31,13 +35,23 @@ class GeneratePasswordsUseCase {
     }
     
     private fun generateSinglePassword(config: PasswordConfig, charset: String): String {
+        if (config.avoidRepeatingChars && charset.length < config.length) {
+            throw IllegalArgumentException("Not enough unique characters for avoid repeating chars")
+        }
+        
         val password = StringBuilder()
         var lastChar: Char? = null
+        var attempts = 0
         
         repeat(config.length) {
             var nextChar: Char
+            attempts = 0
             do {
                 nextChar = charset[Random.nextInt(charset.length)]
+                attempts++
+                if (attempts > 1000) {
+                    throw IllegalStateException("Could not generate password without repeating characters")
+                }
             } while (config.avoidRepeatingChars && nextChar == lastChar && charset.length > 1)
             
             password.append(nextChar)

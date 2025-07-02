@@ -40,9 +40,18 @@ data class PasswordConfig(
     }
     
     fun isValid(): Boolean {
-        return length >= 4 && 
-               length <= 100_000_000 && // 1億桁まで
-               count in 1..25 && 
-               (useUppercase || useLowercase || useNumbers || useSymbols)
+        if (length < 4 || length > 100_000_000 || count !in 1..25) {
+            return false
+        }
+        
+        if (!useUppercase && !useLowercase && !useNumbers && !useSymbols) {
+            return false
+        }
+        
+        if (useSymbols && getAllSymbols().isEmpty()) {
+            return false
+        }
+        
+        return true
     }
 }
