@@ -8,4 +8,6 @@ actual class SecureRandomGenerator : RandomGenerator {
     actual override fun nextInt(bound: Int): Int {
         return secureRandom.nextInt(bound)
     }
+    
+    actual override val hasFallbackOccurred: Boolean = false
 }

@@ -1,5 +1,6 @@
 package com.saitotk.passwordgenerator.domain.usecase
 
+import com.saitotk.passwordgenerator.core.random.RandomGenerator
 import com.saitotk.passwordgenerator.core.random.RandomGeneratorFactory
 import com.saitotk.passwordgenerator.domain.model.GeneratedPassword
 import com.saitotk.passwordgenerator.domain.model.PasswordConfig
@@ -23,9 +24,11 @@ class GeneratePasswordsUseCase {
             
             val passwords = mutableListOf<GeneratedPassword>()
             
+            val randomGenerator = RandomGeneratorFactory.create(config.randomAlgorithm)
+            
             repeat(config.count) {
-                val password = generateSinglePassword(config, charset)
-                passwords.add(GeneratedPassword(password))
+                val password = generateSinglePassword(config, charset, randomGenerator)
+                passwords.add(GeneratedPassword(password, hasFallback = randomGenerator.hasFallbackOccurred))
             }
             
             Result.success(passwords)
@@ -34,12 +37,11 @@ class GeneratePasswordsUseCase {
         }
     }
     
-    private fun generateSinglePassword(config: PasswordConfig, charset: String): String {
+    private fun generateSinglePassword(config: PasswordConfig, charset: String, randomGenerator: RandomGenerator): String {
         if (config.avoidRepeatingChars && charset.length < 2) {
             throw IllegalArgumentException("連続文字回避には最低2種類の文字が必要です")
         }
         
-        val randomGenerator = RandomGeneratorFactory.create(config.randomAlgorithm)
         val password = StringBuilder()
         var lastChar: Char? = null
         var attempts = 0

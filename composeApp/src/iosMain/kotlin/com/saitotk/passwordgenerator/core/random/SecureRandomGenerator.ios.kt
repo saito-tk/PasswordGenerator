@@ -5,6 +5,7 @@ import platform.Security.*
 import kotlin.random.Random
 
 actual class SecureRandomGenerator : RandomGenerator {
+    private var _hasFallbackOccurred = false
     
     actual override fun nextInt(bound: Int): Int {
         return try {
@@ -20,12 +21,17 @@ actual class SecureRandomGenerator : RandomGenerator {
                     kotlin.math.abs(randomInt) % bound
                 } else {
                     // フォールバック: 標準乱数を使用
+                    _hasFallbackOccurred = true
                     Random.nextInt(bound)
                 }
             }
         } catch (e: Exception) {
             // エラー時のフォールバック
+            _hasFallbackOccurred = true
             Random.nextInt(bound)
         }
     }
+    
+    actual override val hasFallbackOccurred: Boolean
+        get() = _hasFallbackOccurred
 }

@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.saitotk.passwordgenerator.domain.model.PasswordConfig
+import com.saitotk.passwordgenerator.domain.model.RandomAlgorithm
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.encodeToString
@@ -26,6 +27,7 @@ class PasswordConfigLocalDataSource(
         private val SELECTED_SYMBOLS_KEY = stringPreferencesKey("selected_symbols")
         private val CUSTOM_SYMBOLS_KEY = stringPreferencesKey("custom_symbols")
         private val AVOID_REPEATING_CHARS_KEY = booleanPreferencesKey("avoid_repeating_chars")
+        private val RANDOM_ALGORITHM_KEY = stringPreferencesKey("random_algorithm")
     }
     
     override suspend fun saveConfig(config: PasswordConfig) {
@@ -39,6 +41,7 @@ class PasswordConfigLocalDataSource(
             preferences[SELECTED_SYMBOLS_KEY] = Json.encodeToString(config.selectedSymbols.toList())
             preferences[CUSTOM_SYMBOLS_KEY] = config.customSymbols
             preferences[AVOID_REPEATING_CHARS_KEY] = config.avoidRepeatingChars
+            preferences[RANDOM_ALGORITHM_KEY] = config.randomAlgorithm.name
         }
     }
     
@@ -52,6 +55,12 @@ class PasswordConfigLocalDataSource(
                 emptyList()
             }
             
+            val randomAlgorithm = try {
+                RandomAlgorithm.valueOf(preferences[RANDOM_ALGORITHM_KEY] ?: RandomAlgorithm.PSEUDO_RANDOM.name)
+            } catch (e: Exception) {
+                RandomAlgorithm.PSEUDO_RANDOM
+            }
+            
             PasswordConfig(
                 length = preferences[LENGTH_KEY] ?: 12,
                 count = preferences[COUNT_KEY] ?: 5,
@@ -61,7 +70,8 @@ class PasswordConfigLocalDataSource(
                 useSymbols = preferences[USE_SYMBOLS_KEY] ?: false,
                 selectedSymbols = selectedSymbolsList.toSet(),
                 customSymbols = preferences[CUSTOM_SYMBOLS_KEY] ?: "",
-                avoidRepeatingChars = preferences[AVOID_REPEATING_CHARS_KEY] ?: false
+                avoidRepeatingChars = preferences[AVOID_REPEATING_CHARS_KEY] ?: false,
+                randomAlgorithm = randomAlgorithm
             )
         }
     }

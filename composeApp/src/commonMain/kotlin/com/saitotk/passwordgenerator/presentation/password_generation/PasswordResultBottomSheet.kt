@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -90,6 +91,15 @@ private fun PasswordResultItem(
             )
             
             Spacer(modifier = Modifier.width(8.dp))
+            
+            if (password.hasFallback) {
+                Icon(
+                    imageVector = Icons.Default.Warning,
+                    contentDescription = "フォールバック警告",
+                    tint = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(end = 8.dp)
+                )
+            }
             
             Icon(
                 imageVector = Icons.Default.ContentCopy,
