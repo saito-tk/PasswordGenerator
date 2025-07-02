@@ -40,7 +40,7 @@ class GeneratePasswordsUseCaseEdgeCaseTest {
             useLowercase = false,
             useNumbers = false,
             useSymbols = true,
-            selectedSymbols = setOf("A", "B"),
+            selectedSymbols = setOf("A"), // 1文字のみ
             avoidRepeatingChars = true
         )
         

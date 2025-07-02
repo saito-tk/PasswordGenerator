@@ -33,9 +33,9 @@ class PasswordConfigTest {
     }
     
     @Test
-    fun `長さ1億を超えてisValidがfalseを返す`() {
+    fun `長さ999万を超えてisValidがfalseを返す`() {
         val config = PasswordConfig(
-            length = 100_000_001,
+            length = 10_000_000,
             count = 5,
             useUppercase = true
         )
@@ -46,7 +46,7 @@ class PasswordConfigTest {
     @Test
     fun `長さが最大値でisValidがtrueを返す`() {
         val config = PasswordConfig(
-            length = 100_000_000,
+            length = 9_999_999,
             count = 5,
             useUppercase = true
         )
@@ -413,5 +413,30 @@ class PasswordConfigTest {
         )
         
         assertFalse(config.isValid())
+    }
+    
+    @Test
+    fun `標準乱数アルゴリズムがデフォルトで設定される`() {
+        val config = PasswordConfig()
+        
+        assertEquals(RandomAlgorithm.PSEUDO_RANDOM, config.randomAlgorithm)
+    }
+    
+    @Test
+    fun `暗号学的乱数アルゴリズムを設定できる`() {
+        val config = PasswordConfig(
+            randomAlgorithm = RandomAlgorithm.CRYPTOGRAPHICALLY_SECURE
+        )
+        
+        assertEquals(RandomAlgorithm.CRYPTOGRAPHICALLY_SECURE, config.randomAlgorithm)
+    }
+    
+    @Test
+    fun `ハードウェア乱数アルゴリズムを設定できる`() {
+        val config = PasswordConfig(
+            randomAlgorithm = RandomAlgorithm.HARDWARE_RANDOM
+        )
+        
+        assertEquals(RandomAlgorithm.HARDWARE_RANDOM, config.randomAlgorithm)
     }
 }

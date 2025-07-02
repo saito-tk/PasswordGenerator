@@ -1,5 +1,7 @@
 package com.saitotk.passwordgenerator.presentation.password_generation
 
+import com.saitotk.passwordgenerator.domain.model.RandomAlgorithm
+
 sealed class PasswordEvent {
     data class UpdateLength(val length: Int) : PasswordEvent()
     data class UpdateCount(val count: Int) : PasswordEvent()
@@ -10,6 +12,7 @@ sealed class PasswordEvent {
     data class UpdateSelectedSymbol(val symbol: String, val selected: Boolean) : PasswordEvent()
     data class UpdateCustomSymbols(val symbols: String) : PasswordEvent()
     data class UpdateAvoidRepeatingChars(val avoid: Boolean) : PasswordEvent()
+    data class UpdateRandomAlgorithm(val algorithm: RandomAlgorithm) : PasswordEvent()
     data class SelectAllSymbols(val selectAll: Boolean) : PasswordEvent()
     data object GeneratePasswords : PasswordEvent()
     data object HidePasswordResults : PasswordEvent()

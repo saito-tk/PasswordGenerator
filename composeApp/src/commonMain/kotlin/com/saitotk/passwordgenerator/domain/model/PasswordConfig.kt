@@ -12,7 +12,8 @@ data class PasswordConfig(
     val useSymbols: Boolean = false,
     val selectedSymbols: Set<String> = emptySet(),
     val customSymbols: String = "",
-    val avoidRepeatingChars: Boolean = false
+    val avoidRepeatingChars: Boolean = false,
+    val randomAlgorithm: RandomAlgorithm = RandomAlgorithm.PSEUDO_RANDOM
 ) {
     val availableSymbols = setOf(
         "-", "_", "@", "/", "*", "+", ",", "!", "?", "#", "$", "%", "&",
@@ -29,18 +30,26 @@ data class PasswordConfig(
     }
     
     fun getCharacterSet(): String {
-        val charset = StringBuilder()
+        val charSet = mutableSetOf<Char>()
         
-        if (useUppercase) charset.append("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-        if (useLowercase) charset.append("abcdefghijklmnopqrstuvwxyz")
-        if (useNumbers) charset.append("0123456789")
-        if (useSymbols) charset.append(getAllSymbols())
+        if (useUppercase) {
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ".forEach { charSet.add(it) }
+        }
+        if (useLowercase) {
+            "abcdefghijklmnopqrstuvwxyz".forEach { charSet.add(it) }
+        }
+        if (useNumbers) {
+            "0123456789".forEach { charSet.add(it) }
+        }
+        if (useSymbols) {
+            getAllSymbols().forEach { charSet.add(it) }
+        }
         
-        return charset.toString()
+        return charSet.joinToString("")
     }
     
     fun isValid(): Boolean {
-        if (length < 4 || length > 100_000_000 || count !in 1..25) {
+        if (length < 4 || length > 9_999_999 || count !in 1..25) {
             return false
         }
         

@@ -14,6 +14,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.saitotk.passwordgenerator.domain.model.PasswordConfig
+import com.saitotk.passwordgenerator.domain.model.RandomAlgorithm
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -85,6 +86,13 @@ fun PasswordScreen(
                     onCustomSymbolsChange = { onEvent(PasswordEvent.UpdateCustomSymbols(it)) }
                 )
             }
+        }
+
+        item {
+            RandomAlgorithmSection(
+                selectedAlgorithm = uiState.config.randomAlgorithm,
+                onAlgorithmChange = { onEvent(PasswordEvent.UpdateRandomAlgorithm(it)) }
+            )
         }
 
         item {
@@ -186,12 +194,12 @@ private fun PasswordLengthSection(
             value = length.toString(),
             onValueChange = { value ->
                 value.toLongOrNull()?.let { newLength ->
-                    if (newLength >= 4 && newLength <= 100_000_000) {
+                    if (newLength >= 4 && newLength <= 9_999_999) {
                         onLengthChange(newLength.toInt())
                     }
                 }
             },
-            label = { Text("文字数 (4文字以上、最大1億桁)") },
+            label = { Text("文字数 (4文字以上、最大999万桁)") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )
@@ -348,5 +356,50 @@ private fun SymbolSelectionSection(
             placeholder = { Text("任意の記号を入力") },
             modifier = Modifier.fillMaxWidth()
         )
+    }
+}
+
+@Composable
+private fun RandomAlgorithmSection(
+    selectedAlgorithm: RandomAlgorithm,
+    onAlgorithmChange: (RandomAlgorithm) -> Unit
+) {
+    Column {
+        Text(
+            text = "乱数アルゴリズム",
+            style = MaterialTheme.typography.titleMedium
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        
+        RandomAlgorithm.values().forEach { algorithm ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .selectable(
+                        selected = (selectedAlgorithm == algorithm),
+                        onClick = { onAlgorithmChange(algorithm) },
+                        role = Role.RadioButton
+                    )
+                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
+                    selected = (selectedAlgorithm == algorithm),
+                    onClick = null
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = algorithm.displayName,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Text(
+                        text = algorithm.description,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        }
     }
 }

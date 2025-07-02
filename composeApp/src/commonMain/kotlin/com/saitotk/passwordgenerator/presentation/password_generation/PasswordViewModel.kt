@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.saitotk.passwordgenerator.core.clipboard.ClipboardManager
 import com.saitotk.passwordgenerator.domain.model.PasswordConfig
+import com.saitotk.passwordgenerator.domain.model.RandomAlgorithm
 import com.saitotk.passwordgenerator.domain.usecase.GeneratePasswordsUseCase
 import com.saitotk.passwordgenerator.domain.usecase.GetPasswordConfigUseCase
 import com.saitotk.passwordgenerator.domain.usecase.SavePasswordConfigUseCase
@@ -40,6 +41,7 @@ class PasswordViewModel(
             is PasswordEvent.UpdateSelectedSymbol -> updateSelectedSymbol(event.symbol, event.selected)
             is PasswordEvent.UpdateCustomSymbols -> updateCustomSymbols(event.symbols)
             is PasswordEvent.UpdateAvoidRepeatingChars -> updateAvoidRepeatingChars(event.avoid)
+            is PasswordEvent.UpdateRandomAlgorithm -> updateRandomAlgorithm(event.algorithm)
             is PasswordEvent.SelectAllSymbols -> selectAllSymbols(event.selectAll)
             is PasswordEvent.GeneratePasswords -> generatePasswords()
             is PasswordEvent.HidePasswordResults -> hidePasswordResults()
@@ -68,7 +70,7 @@ class PasswordViewModel(
     }
     
     private fun updateLength(length: Int) {
-        val validLength = length.coerceIn(4, 100_000_000) // 1億桁まで
+        val validLength = length.coerceIn(4, 9_999_999) // 999万桁まで
         updateConfig { it.copy(length = validLength) }
     }
     
@@ -115,6 +117,10 @@ class PasswordViewModel(
     
     private fun updateAvoidRepeatingChars(avoid: Boolean) {
         updateConfig { it.copy(avoidRepeatingChars = avoid) }
+    }
+    
+    private fun updateRandomAlgorithm(algorithm: RandomAlgorithm) {
+        updateConfig { it.copy(randomAlgorithm = algorithm) }
     }
     
     private fun selectAllSymbols(selectAll: Boolean) {

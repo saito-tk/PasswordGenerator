@@ -1,6 +1,7 @@
 package com.saitotk.passwordgenerator.domain.usecase
 
 import com.saitotk.passwordgenerator.domain.model.PasswordConfig
+import com.saitotk.passwordgenerator.domain.model.RandomAlgorithm
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -482,5 +483,51 @@ class GeneratePasswordsUseCaseTest {
         val password = result.getOrNull()!!.first()
         assertEquals(8, password.value.length)
         assertTrue(password.value.all { it in "@#" })
+    }
+    
+    @Test
+    fun `暗号学的乱数でパスワードを生成する`() {
+        val config = PasswordConfig(
+            length = 8,
+            count = 1,
+            useUppercase = true,
+            useLowercase = true,
+            useNumbers = true,
+            useSymbols = false,
+            randomAlgorithm = RandomAlgorithm.CRYPTOGRAPHICALLY_SECURE
+        )
+        
+        val result = useCase(config)
+        
+        assertTrue(result.isSuccess)
+        val password = result.getOrNull()!!.first()
+        assertEquals(8, password.value.length)
+        val allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+        assertTrue(password.value.all { it in allowedChars })
+    }
+    
+    @Test
+    fun `ハードウェア乱数でパスワードを生成する`() {
+        val config = PasswordConfig(
+            length = 12,
+            count = 2,
+            useUppercase = true,
+            useLowercase = true,
+            useNumbers = true,
+            useSymbols = true,
+            selectedSymbols = setOf("!", "@", "#"),
+            randomAlgorithm = RandomAlgorithm.HARDWARE_RANDOM
+        )
+        
+        val result = useCase(config)
+        
+        assertTrue(result.isSuccess)
+        val passwords = result.getOrNull()!!
+        assertEquals(2, passwords.size)
+        passwords.forEach { password ->
+            assertEquals(12, password.value.length)
+            val allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#"
+            assertTrue(password.value.all { it in allowedChars })
+        }
     }
 }

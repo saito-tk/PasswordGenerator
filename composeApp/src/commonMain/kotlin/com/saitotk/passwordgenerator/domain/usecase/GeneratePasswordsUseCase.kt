@@ -1,8 +1,8 @@
 package com.saitotk.passwordgenerator.domain.usecase
 
+import com.saitotk.passwordgenerator.core.random.RandomGeneratorFactory
 import com.saitotk.passwordgenerator.domain.model.GeneratedPassword
 import com.saitotk.passwordgenerator.domain.model.PasswordConfig
-import kotlin.random.Random
 
 class GeneratePasswordsUseCase {
     
@@ -17,8 +17,8 @@ class GeneratePasswordsUseCase {
                 return Result.failure(IllegalArgumentException("No character types selected"))
             }
             
-            if (config.avoidRepeatingChars && charset.length < config.length) {
-                return Result.failure(IllegalArgumentException("Not enough unique characters for avoid repeating chars"))
+            if (config.avoidRepeatingChars && charset.length < 2) {
+                return Result.failure(IllegalArgumentException("連続文字回避には最低2種類の文字が必要です"))
             }
             
             val passwords = mutableListOf<GeneratedPassword>()
@@ -35,10 +35,11 @@ class GeneratePasswordsUseCase {
     }
     
     private fun generateSinglePassword(config: PasswordConfig, charset: String): String {
-        if (config.avoidRepeatingChars && charset.length < config.length) {
-            throw IllegalArgumentException("Not enough unique characters for avoid repeating chars")
+        if (config.avoidRepeatingChars && charset.length < 2) {
+            throw IllegalArgumentException("連続文字回避には最低2種類の文字が必要です")
         }
         
+        val randomGenerator = RandomGeneratorFactory.create(config.randomAlgorithm)
         val password = StringBuilder()
         var lastChar: Char? = null
         var attempts = 0
@@ -47,7 +48,7 @@ class GeneratePasswordsUseCase {
             var nextChar: Char
             attempts = 0
             do {
-                nextChar = charset[Random.nextInt(charset.length)]
+                nextChar = charset[randomGenerator.nextInt(charset.length)]
                 attempts++
                 if (attempts > 1000) {
                     throw IllegalStateException("Could not generate password without repeating characters")
