@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 90;
 	objects = {
 
 /* Begin PBXFileReference section */
@@ -39,10 +39,8 @@
 /* Begin PBXFrameworksBuildPhase section */
 		B9DA97AE2DC1472C00A4DA20 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
@@ -78,14 +76,10 @@
 			);
 			buildRules = (
 			);
-			dependencies = (
-			);
 			fileSystemSynchronizedGroups = (
 				B9DA97B32DC1472C00A4DA20 /* iosApp */,
 			);
 			name = iosApp;
-			packageProductDependencies = (
-			);
 			productName = iosApp;
 			productReference = B9DA97B12DC1472C00A4DA20 /* PasswordGenerator.app */;
 			productType = "com.apple.product-type.application";
@@ -114,7 +108,7 @@
 			);
 			mainGroup = B9DA97A82DC1472C00A4DA20;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
+			preferredProjectObjectVersion = 90;
 			productRefGroup = B9DA97B22DC1472C00A4DA20 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -127,10 +121,8 @@
 /* Begin PBXResourcesBuildPhase section */
 		B9DA97AF2DC1472C00A4DA20 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
@@ -138,36 +130,31 @@
 		B9DA97F42DC1497100A4DA20 /* Compile Kotlin Framework */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
 			name = "Compile Kotlin Framework";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"YES\" = \"$OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED\" ]; then\n  echo \"Skipping Gradle build task invocation due to OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED environment variable set to \\\"YES\\\"\"\n  exit 0\nfi\ncd \"$SRCROOT/..\"\n./gradlew :composeApp:embedAndSignAppleFrameworkForXcode\n";
+			shellScript = (
+				"if [ \"YES\" = \"$OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED\" ]; then",
+				"  echo \"Skipping Gradle build task invocation due to OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED environment variable set to \\\"YES\\\"\"",
+				"  exit 0",
+				"fi",
+				"cd \"$SRCROOT/..\"",
+				"./gradlew :composeApp:embedAndSignAppleFrameworkForXcode",
+				"",
+				"",
+			);
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B9DA97AD2DC1472C00A4DA20 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		B9DA97BD2DC1472D00A4DA20 /* Debug */ = {
+		B9DA97BD2DC1472D00A4DA20 /* Debug configuration for PBXProject "iosApp" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -230,7 +217,7 @@
 			};
 			name = Debug;
 		};
-		B9DA97BE2DC1472D00A4DA20 /* Release */ = {
+		B9DA97BE2DC1472D00A4DA20 /* Release configuration for PBXProject "iosApp" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -286,7 +273,7 @@
 			};
 			name = Release;
 		};
-		B9DA97C02DC1472D00A4DA20 /* Debug */ = {
+		B9DA97C02DC1472D00A4DA20 /* Debug configuration for PBXNativeTarget "iosApp" */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReferenceAnchor = B9DA98002DC14AA900A4DA20 /* Configuration */;
 			baseConfigurationReferenceRelativePath = Config.xcconfig;
@@ -296,7 +283,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
-				DEVELOPMENT_TEAM = "${TEAM_ID}";
+				DEVELOPMENT_TEAM = HSCDQQ4D8D;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -313,13 +300,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		B9DA97C12DC1472D00A4DA20 /* Release */ = {
+		B9DA97C12DC1472D00A4DA20 /* Release configuration for PBXNativeTarget "iosApp" */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReferenceAnchor = B9DA98002DC14AA900A4DA20 /* Configuration */;
 			baseConfigurationReferenceRelativePath = Config.xcconfig;
@@ -329,7 +317,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
-				DEVELOPMENT_TEAM = "${TEAM_ID}";
+				DEVELOPMENT_TEAM = HSCDQQ4D8D;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -346,6 +334,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -358,19 +347,17 @@
 		B9DA97AC2DC1472C00A4DA20 /* Build configuration list for PBXProject "iosApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				B9DA97BD2DC1472D00A4DA20 /* Debug */,
-				B9DA97BE2DC1472D00A4DA20 /* Release */,
+				B9DA97BD2DC1472D00A4DA20 /* Debug configuration for PBXProject "iosApp" */,
+				B9DA97BE2DC1472D00A4DA20 /* Release configuration for PBXProject "iosApp" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		B9DA97BF2DC1472D00A4DA20 /* Build configuration list for PBXNativeTarget "iosApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				B9DA97C02DC1472D00A4DA20 /* Debug */,
-				B9DA97C12DC1472D00A4DA20 /* Release */,
+				B9DA97C02DC1472D00A4DA20 /* Debug configuration for PBXNativeTarget "iosApp" */,
+				B9DA97C12DC1472D00A4DA20 /* Release configuration for PBXNativeTarget "iosApp" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
