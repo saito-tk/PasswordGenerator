@@ -7,7 +7,7 @@
 ## 技術スタック・構成
 
 - Kotlin Multiplatform Mobile（KMM）
-- Kotlin 2.2.0-RC3
+- Kotlin 2.2.0
 - Compose Multiplatform（Android/iOS共通UI, Material Design 3 対応）
 - Koin（依存性注入）
 - kotlinx.coroutines（非同期処理）
@@ -147,7 +147,7 @@ root/
 ## その他補足
 
 - 使用記号の選択はアクセシビリティも考慮し、複雑になりすぎないUI構成を希望
-- Kotlin MultiplatformはStable直前のバージョンを採用（2.2.0-RC3）
+- Kotlin MultiplatformはStable直前のバージョンを採用（2.2.0）
 - 永続設定保存には `MMKV` または `DataStore` を想定
 - UIコンポーネントは Material Design 3 に沿ってデザインする（MaterialTheme3 に準拠）
 - Android側では `androidx.compose.material3.*` を使用、iOS側は同等のスタイルが再現されることを想定
